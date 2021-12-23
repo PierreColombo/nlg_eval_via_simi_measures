@@ -32,10 +32,10 @@ class DepthScoreMetric:
         self.n_alpha = 5 if n_alpha is None else n_alpha
         self.eps = 0.3 if eps is None else eps
         self.p = 5 if p is None else p
+        self.model_name = model_name
         self.load_tokenizer_and_model()
         self.considered_measure = considered_measure
         assert considered_measure in ["irw", "ai_irw", "wasserstein", "sliced", "mmd"]
-        self.model_name = model_name
         self.layers_to_consider = layers_to_consider
         assert layers_to_consider < self.model.config.num_hidden_layers + 1
         self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -44,8 +44,8 @@ class DepthScoreMetric:
         """
         Loading and initializing the chosen model and tokenizer
         """
-        tokenizer = AutoTokenizer.from_pretrained('{}'.format(model_name))
-        model = AutoModelForMaskedLM.from_pretrained('{}'.format(model_name))
+        tokenizer = AutoTokenizer.from_pretrained('{}'.format(self.model_name))
+        model = AutoModelForMaskedLM.from_pretrained('{}'.format(self.model_name))
         model.config.output_hidden_states = True
         model.eval()
         self.tokenizer = tokenizer
@@ -114,7 +114,18 @@ class DepthScoreMetric:
 
                 dict_score = self.depth_score(measures_locations_ref, measures_locations_hyps)
                 depth_scores.append(dict_score)
-        return depth_scores
+        depth_scores_dic = {}
+        for k in dict_score.keys():
+            depth_scores_dic[k] = []
+            for score in depth_scores:
+                depth_scores_dic[k].append(score[k])
+        return depth_scores_dic
+
+    def prepare_idfs(self, hyps, refs):
+        """
+        Depth Score does not use idfs
+        """
+        return None, None
 
     def depth_score(self, measures_locations_ref, measures_locations_hyps):
         """

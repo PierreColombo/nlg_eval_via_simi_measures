@@ -5,7 +5,7 @@ import torch
 
 from bary_score import BaryScoreMetric
 from depth_score import DepthScoreMetric
-from infoscores import InfoScore
+from infolm import InfoLM
 from tqdm import tqdm
 import logging
 
@@ -16,74 +16,90 @@ logging.basicConfig(
 
 def main():
     torch.multiprocessing.set_sharing_strategy("file_system")
-
-    parser = argparse.ArgumentParser("Calculate BERTScore")
+    ####################
+    # Common Arguments #
+    ####################
+    parser = argparse.ArgumentParser("Calculate Metrics Based on Statistical Measures of Similarity")
+    parser.add_argument("--metric_name", type=str, default="depthscore",
+                        choices=['depthscore', 'baryscore', 'infolm'], help=" which metric to compute")
     parser.add_argument(
-        "--lang",
-        type=str,
-        default=None,
-        help='two-letter abbreviation of the language (e.g., en) or "en-sci" for scientific text',
+        "-m", "--model", default='bert-base-uncased',
+        help="BERT model name (default: bert-base-uncased) or path to a pretrain model",
     )
-    parser.add_argument(
-        "-m", "--model", default=None, help="BERT model name (default: bert-base-uncased) or path to a pretrain model",
-    )
-    parser.add_argument("-l", "--num_layers", type=int, default=None, help="use first N layer in BERT (default: 8)")
-    parser.add_argument("-b", "--batch_size", type=int, default=64, help="batch size (default: 64)")
-    parser.add_argument("--nthreads", type=int, default=4, help="number of cpu workers (default: 4)")
-    parser.add_argument("--idf", action="store_true", help="BERT Score with IDF scaling")
-
-    parser.add_argument("--baseline_path", default=None, type=str, help="path of custom baseline csv file")
-    parser.add_argument("--use_fast_tokenizer", action="store_false", help="whether to use HF fast tokenizer")
-    parser.add_argument("-s", "--seg_level", action="store_true", help="show individual score of each pair")
-    parser.add_argument("-v", "--verbose", action="store_true", help="increase output verbosity")
-    parser.add_argument("-r", "--ref", type=str, nargs="+", required=True, help="reference file path(s) or a string")
+    parser.add_argument("-b", "--batch_size", type=int, default=3, help="batch size (default: 64)")
+    parser.add_argument("-r", "--ref", type=str, required=True, help="reference file path or a string")
     parser.add_argument(
         "-c", "--cand", type=str, required=True, help="candidate (system outputs) file path or a string",
     )
+    parser.add_argument("--idf", action="store_true", help="if true use idf")
+    ###################
+    # Argument InfoLM #
+    ###################
+    parser.add_argument("--measure_to_use", type=str, default="fisher_rao",
+                        choices=['kl', 'alpha', 'renyi', 'beta', 'ab', 'l1', "l2", "linf", 'fisher_rao'],
+                        help=" which measure of information to use")
+    parser.add_argument("--temperature", type=float, default=0.5, help=" temperature to calibrate the LM")
+    parser.add_argument("--beta", type=float, default=0.5, help="beta parameter in the ab or beta div")
+    parser.add_argument("--alpha", type=float, default=0.5, help="alpha parameter in the ab, alpha or renyi div")
+
+    ######################
+    # Argument BaryScore #
+    ######################
+    parser.add_argument("--last_layers", type=int, default=5, help="use the last  N layer in BERT")
+    parser.add_argument("--sinkhorn_ref", type=float, default=0.01, help="weight of the KL in the SD")
+
+    #######################
+    # Argument DepthScore #
+    #######################
+    parser.add_argument("--layers_to_consider", type=int, default=9, help="use the N-th layer in BERT")
+    parser.add_argument("--considered_measure", type=str, default='ai_irw',
+                        choices=["irw", "ai_irw", "wasserstein", "sliced", "mmd"], help="")
+    parser.add_argument("--p", type=float, default=5, help="the power of the ground cost")
+    parser.add_argument("--eps", type=float, default=0.3, help="the highest level set")
+    parser.add_argument("--n_alpha", type=float, default=5,
+                        help="the Monte-Carlo parameter for the approximation of the integral  over alpha.")
 
     args = parser.parse_args()
-
+    logging.info("Computing Score for {}".format(args.metric_name))
     if os.path.isfile(args.cand):
         with open(args.cand) as f:
             cands = [line.strip() for line in f]
 
-        refs = []
-        for ref_file in args.ref:
-            assert os.path.exists(ref_file), f"reference file {ref_file} doesn't exist"
-            with open(ref_file) as f:
-                curr_ref = [line.strip() for line in f]
-                assert len(curr_ref) == len(cands), f"# of sentences in {ref_file} doesn't match the # of candidates"
-                refs.append(curr_ref)
-        refs = list(zip(*refs))
-    elif os.path.isfile(args.ref[0]):
-        assert os.path.exists(args.cand), f"candidate file {args.cand} doesn't exist"
+        if os.path.exists(args.ref):
+            with open(args.ref) as f:
+                refs = [line.strip() for line in f]
+        logging.info("Files opened Starting To Process")
     else:
+        logging.info("Single Sentence Score")
         cands = [args.cand]
         refs = [args.ref]
         assert not args.idf, "do not support idf mode for a single pair of sentences"
-
     # do for loops :)
-    if args.metric_name == 'infoscore':
-        metric = InfoScore(model_name=args.model, temperature=0.25, measure_to_use='fisher_rao',
-                           use_idf_weights=True, alpha=None, beta=None)
+    if args.metric_name == 'infolm':
+        metric = InfoLM(model_name=args.model, temperature=args.temperature, measure_to_use=args.measure_to_use,
+                        use_idf_weights=args.idf, alpha=args.alpha, beta=args.beta)
     elif args.metric_name == 'depthscore':
-        metric = DepthScoreMetric(model_name=args.model, layers_to_consider=9, considered_measure='irw', p=None,
-                                  eps=None, n_alpha=None)
+        metric = DepthScoreMetric(model_name=args.model, layers_to_consider=args.layers_to_consider,
+                                  considered_measure=args.considered_measure, p=args.p,
+                                  eps=args.eps, n_alpha=args.n_alpha)
     elif args.metric_name == 'baryscore':
-        metric = BaryScoreMetric(model_name=args.model, last_layers=5, use_idfs=True, sinkhorn_ref=0.01)
+        metric = BaryScoreMetric(model_name=args.model, last_layers=args.last_layers, use_idfs=args.idf,
+                                 sinkhorn_ref=args.sinkhorn_ref)
     else:
         raise NotImplementedError
     all_preds = []
-    idf_hyps, idf_ref = metric.prepare_idfs(all_candidates, all_hypothesis)
-    for golden_batch, candidate_batch in tqdm(zip(), 'Evaluation in Progress'):
+    idf_hyps, idf_ref = metric.prepare_idfs(cands, refs)
+    batched_candidates = [cands[i:i + args.batch_size] for i in range(0, len(cands), args.batch_size)]
+    batched_references = [refs[i:i + args.batch_size] for i in range(0, len(refs), args.batch_size)]
+    for golden_batch, candidate_batch in tqdm(zip(batched_references, batched_candidates), 'Evaluation in Progress'):
         preds = metric.evaluate_batch(candidate_batch, golden_batch, idf_hyps=idf_hyps, idf_ref=idf_ref)
         all_preds.append(preds)
 
     for k in preds.keys():
-        preds = []
+        l_preds = []
         for pred in all_preds:
-            preds.append(pred)
-        logging.info('Metric {} : {}'.format(k, sum(preds) / len(preds)))
+            l_preds.append(pred[k])
+        logging.info('Metric {} : {}'.format(k, sum(sum(l_preds, [])) / len(sum(l_preds, []))))
 
 
 if __name__ == "__main__":

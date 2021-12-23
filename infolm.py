@@ -7,7 +7,7 @@ from math import log
 from collections import defaultdict, Counter
 
 
-class InfoScore:
+class InfoLM:
     def __init__(self, model_name="bert-base-uncased", temperature=0.25, measure_to_use='fisher_rao',
                  use_idf_weights=True, alpha=None, beta=None):
         """
@@ -39,7 +39,7 @@ class InfoScore:
         t_refs = self.tokenizer(refs)['input_ids']
         idf_dict_ref = self.ref_list_to_idf(t_refs)
         idf_dict_hyp = self.ref_list_to_idf(t_hyps)
-        return (idf_dict_ref, idf_dict_hyp)
+        return idf_dict_hyp, idf_dict_ref
 
     def ref_list_to_idf(self, input_refs):
         """
@@ -329,7 +329,7 @@ class InfoScore:
 if __name__ == '__main__':
 
     for measure in ['kl', 'alpha', 'renyi', 'beta', 'ab', 'l1', "l2", "linf", 'fisher_rao']:
-        metric = InfoScore(measure_to_use=measure, alpha=0.25, beta=0.25, temperature=1, use_idf_weights=False)
+        metric = InfoLM(measure_to_use=measure, alpha=0.25, beta=0.25, temperature=1, use_idf_weights=False)
 
         ref = ['I like my cakes very much', 'I like my cakes very much']
         hypothesis = ['I like my cakes very much', 'I hate these cakes very much']

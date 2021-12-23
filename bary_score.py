@@ -15,7 +15,7 @@ class BaryScoreMetric:
         :param model_name: model name or path from HuggingFace Librairy
         :param last_layers: last layer to use in the pretrained model
         :param use_idfs: if true use idf costs else use uniform weights
-        :param sinkhorn_ref: KL weight in the SD
+        :param sinkhorn_ref:  weight of the KL in the SD
         """
 
         self.model_name = model_name
@@ -39,6 +39,7 @@ class BaryScoreMetric:
         idf_dict_hyp = self.ref_list_to_idf(t_hyps)
         idfs_tokenizer = (idf_dict_ref, idf_dict_hyp)
         self.model_ids = idfs_tokenizer
+        return idf_dict_hyp, idf_dict_ref
 
     def ref_list_to_idf(self, input_refs):
         """
@@ -115,8 +116,8 @@ class BaryScoreMetric:
             ####################################
             for index_sentence in tqdm(range(nb_sentences), 'BaryScore Progress'):
                 dict_score = {}
-                ref_ids_idf = batch_refs['input_ids']
-                hyp_idf_ids = batch_hyps['input_ids']
+                ref_ids_idf = batch_refs['input_ids'][index_sentence]
+                hyp_idf_ids = batch_hyps['input_ids'][index_sentence]
 
                 ref_tokens = [i for i in self.tokenizer.convert_ids_to_tokens(ref_tokens_id[index_sentence],
                                                                               skip_special_tokens=False) if
@@ -152,9 +153,15 @@ class BaryScoreMetric:
                     baryscore = self.baryscore(measures_locations_ref, measures_locations_hyps, None, None)
 
                 for key, value in baryscore.items():
-                    dict_score['baryscore_{}_measure_{}'.format(index_sentence, key)] = value
+                    dict_score['baryscore_{}'.format(key)] = value
                 baryscores.append(dict_score)
-        return baryscores
+            baryscores_dic = {}
+            for k in dict_score.keys():
+                baryscores_dic[k] = []
+                for score in baryscores:
+                    baryscores_dic[k].append(score[k])
+
+        return baryscores_dic
 
     def baryscore(self, measures_locations_ref, measures_locations_hyps, weights_refs, weights_hyps):
         """
