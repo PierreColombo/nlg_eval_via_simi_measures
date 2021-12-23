@@ -26,7 +26,7 @@ If you find this repo useful, please cite our papers:
 ```
 @article{infolm_aaai2022,
   title={InfoLM: A New Metric to Evaluate Summarization \& Data2Text Generation},
-  author={Colombo, Pierre and Clave, Chloe and Piantanida, Pablo},
+  author={Colombo, Pierre and Clavel, Chloe and Piantanida, Pablo},
   journal={arXiv preprint arXiv:2112.01589},
   year={2021}
 }
