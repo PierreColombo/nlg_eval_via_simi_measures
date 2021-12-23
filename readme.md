@@ -10,10 +10,9 @@ Automatic Evaluation Metric described in the papers [BaryScore](https://arxiv.or
 
 ### Overview
 
-BERTScore leverages the pre-trained contextual embeddings from BERT and matches words in candidate and reference
-sentences by cosine similarity. It has been shown to correlate with human judgment on sentence-level and system-level
-evaluation. Moreover, BERTScore computes precision, recall, and F1 measure, which can be useful for evaluating different
-language generation tasks.
+* BaryScore
+* DepthScore
+* InfoLM
 
 If you find this repo useful, please cite our papers:
 
@@ -57,30 +56,9 @@ If you find this repo useful, please cite our papers:
 
 #### Python Function
 
-For each of the proposed metric, we provide
-
 Running our metrics can be computationally intensive (because it relies on pretrained models). Therefore, a GPU is
 usually necessary. If you don't have access to a GPU, you can use light pretrained representations such as TinyBERT,
 DistilBERT.
-
-#### Command Line Interface (CLI)
-
-We provide a command line interface (CLI) of BERTScore as well as a python module. For the CLI, you can use it as
-follows:
-
-1. To evaluate using the comande line
-
-We provide example inputs under `./sample`.
-
-```
-export metric=infolm
-export measure_to_use=fisher_rao
-python score_cli.py --ref="samples/refs.txt" --cand="samples/hyps.txt" --metric_name=${metric} --measure_to_use=${measure_to_use}
- ```
-
-See more options by `python score_cli.py -h`.
-
-2. To evaluate using a python script
 
 We provide example inputs under `<metric>.py`. For example for BaryScore
 
@@ -97,6 +75,19 @@ metric_call.prepare_idfs(ref, hypothesis)
 final_preds = metric_call.evaluate_batch(ref, hypothesis)
 print(final_preds)
 ```
+
+#### Command Line Interface (CLI)
+
+We provide a command line interface (CLI) of BERTScore as well as a python module. For the CLI, you can use it as
+follows:
+
+```
+export metric=infolm
+export measure_to_use=fisher_rao
+CUDA_VISIBLE_DEVICES=0 python score_cli.py --ref="samples/refs.txt" --cand="samples/hyps.txt" --metric_name=${metric} --measure_to_use=${measure_to_use}
+ ```
+
+See more options by `python score_cli.py -h`.
 
 #### Practical Tips
 
