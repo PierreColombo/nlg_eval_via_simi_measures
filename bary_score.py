@@ -65,12 +65,12 @@ class BaryScoreMetric:
         self.tokenizer = tokenizer
         self.model = model
 
-    def evaluate_batch(self, batch_hyps, batch_refs, idf_dict_hyp=None, idf_dict_ref=None):
+    def evaluate_batch(self, batch_hyps, batch_refs, idf_hyps=None, idf_ref=None):
         """
         :param batch_hyps: hypothesis list of string sentences
         :param batch_refs: reference list of string sentences
-        :param idf_dict_hyp: idfs of hypothesis computed at corpus level
-        :param idf_dict_ref: idfs of references computed at corpus level
+        :param idf_hyps: idfs of hypothesis computed at corpus level
+        :param idf_ref: idfs of references computed at corpus level
         :return: dictionnary of scores
         """
         ###############################################
@@ -84,8 +84,8 @@ class BaryScoreMetric:
         baryscores = []
         assert len(batch_hyps) == len(batch_refs)
 
-        if (idf_dict_hyp is None) and (idf_dict_ref is None):
-            idf_dict_hyp, idf_dict_ref = self.model_ids
+        if (idf_hyps is None) and (idf_ref is None):
+            idf_hyps, idf_ref = self.model_ids
 
         model = self.model.to(self.device)
 
@@ -129,8 +129,8 @@ class BaryScoreMetric:
                 hyp_ids = [k for k, w in enumerate(hyp_tokens) if True]
 
                 # With stop words
-                ref_idf_i = [idf_dict_ref[i] for i in ref_ids_idf]
-                hyp_idf_i = [idf_dict_hyp[i] for i in hyp_idf_ids]
+                ref_idf_i = [idf_ref[i] for i in ref_ids_idf]
+                hyp_idf_i = [idf_hyps[i] for i in hyp_idf_ids]
 
                 ref_embedding_i = batch_refs_embeddings[:, index_sentence, ref_ids, :]
                 hyp_embedding_i = batch_hyps_embeddings[:, index_sentence, hyp_ids, :]

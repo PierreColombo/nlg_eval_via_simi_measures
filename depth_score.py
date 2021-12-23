@@ -51,7 +51,7 @@ class DepthScoreMetric:
         self.tokenizer = tokenizer
         self.model = model
 
-    def evaluate_batch(self, batch_hyps, batch_refs):
+    def evaluate_batch(self, batch_hyps, batch_refs, idf_hyps=None, idf_ref=None):
         """
         :param batch_hyps: hypothesis list of string sentences
         :param batch_refs: reference list of string sentences

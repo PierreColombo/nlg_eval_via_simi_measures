@@ -137,7 +137,7 @@ class InfoScore:
         :param hypo_dist: discreate hypothesis reference distribution over the vocabulary
         :return: kl divergence between the reference and hypothesis distribution
         """
-        kl = torch.sum(ref_dist * torch.log(hypo_dist/ref_dist), dim=-1)
+        kl = torch.sum(ref_dist * torch.log(hypo_dist / ref_dist), dim=-1)
         return kl
 
     def renyi_div(self, ref_dist, hypo_dist):
@@ -266,7 +266,7 @@ class InfoScore:
             final_distribution.append(dict_logits_distribution)
         return final_distribution, idfs
 
-    def evaluate_batch(self, batch_hyps, batch_refs, idf_hyps, idf_ref):
+    def evaluate_batch(self, batch_hyps, batch_refs, idf_hyps=None, idf_ref=None):
         """
         :param batch_hyps: hypothesis list of string sentences
         :param batch_refs: reference list of string sentences
