@@ -130,8 +130,8 @@ class BaryScoreMetric:
                 hyp_ids = [k for k, w in enumerate(hyp_tokens) if True]
 
                 # With stop words
-                ref_idf_i = [idf_ref[i] for i in ref_ids_idf]
-                hyp_idf_i = [idf_hyps[i] for i in hyp_idf_ids]
+                ref_idf_i = [idf_ref[i] for i in ref_ids_idf[ref_ids]]
+                hyp_idf_i = [idf_hyps[i] for i in hyp_idf_ids[hyp_ids]]
 
                 ref_embedding_i = batch_refs_embeddings[:, index_sentence, ref_ids, :]
                 hyp_embedding_i = batch_hyps_embeddings[:, index_sentence, hyp_ids, :]
@@ -150,7 +150,10 @@ class BaryScoreMetric:
                     #####################
                     ## Uniform Weights ##
                     #####################
-                    baryscore = self.baryscore(measures_locations_ref, measures_locations_hyps, None, None)
+                    uniform_refs = [1 / len(measures_locations_ref)] * len(measures_locations_ref)
+                    uniform_hyps = [1 / len(measures_locations_hyps)] * len(measures_locations_hyps)
+                    baryscore = self.baryscore(measures_locations_ref, measures_locations_hyps, uniform_refs,
+                                               uniform_hyps)
 
                 for key, value in baryscore.items():
                     dict_score['baryscore_{}'.format(key)] = value

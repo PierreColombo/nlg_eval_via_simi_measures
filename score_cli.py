@@ -20,7 +20,7 @@ def main():
     # Common Arguments #
     ####################
     parser = argparse.ArgumentParser("Calculate Metrics Based on Statistical Measures of Similarity")
-    parser.add_argument("--metric_name", type=str, default="depthscore",
+    parser.add_argument("--metric_name", type=str, default="baryscore",
                         choices=['depthscore', 'baryscore', 'infolm'], help=" which metric to compute")
     parser.add_argument(
         "-m", "--model", default='bert-base-uncased',
