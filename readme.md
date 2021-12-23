@@ -1,18 +1,10 @@
 # NLG evaluation via Statistical Measures of Similarity: BaryScore, DepthScore, InfoLM
 
-Automatic Evaluation Metric described in the
-paper [BERTScore: Evaluating Text Generation with BERT](https://arxiv.org/abs/1904.09675) (ICLR 2020). We now support
-about 130 models (see
-this [spreadsheet](https://docs.google.com/spreadsheets/d/1RKOVpselB98Nnh_EOC4A2BYn8_201tmPODpNWu4w7xI/edit?usp=sharing)
-for their correlations with human evaluation). Currently, the best model is `microsoft/deberta-xlarge-mnli`, please
-consider using it instead of the default `roberta-large` in order to have the best correlation with human evaluation.
-
+Automatic Evaluation Metric described in the papers [BaryScore](https://arxiv.org/abs/2108.12463), [DepthScore](https://arxiv.org/abs/2103.12711), [InfoLM](https://arxiv.org/abs/2112.01589) (AAAI2022)
 #### Authors:
 
 * [Pierre Colombo](https://scholar.google.com/citations?user=yPoMt8gAAAAJ&hl=fr)
 * [Guillaume Staerman](https://scholar.google.com/citations?user=Zb2ax0wAAAAJ&hl=fr)
-* [Chloé Clavel](https://scholar.google.fr/citations?user=TAZbfksAAAAJ&hl=en)
-* [Pablo Piantanida](https://scholar.google.com/citations?user=QyBEFv0AAAAJ&hl=fr)
 
 ### Overview
 
@@ -63,53 +55,45 @@ If you find this repo useful, please cite our papers:
 
 #### Python Function
 
-On a high level, we provide a python function `bert_score.score` and a python object `bert_score.BERTScorer`. The
-function provides all the supported features while the scorer object caches the BERT model to faciliate multiple
-evaluations. Check our [demo](./example/Demo.ipynb) to see how to use these two interfaces. Please refer
-to [`bert_score/score.py`](./bert_score/score.py) for implementation details.
+For each of the proposed metric, we provide
+
 
 Running our metrics can be computationally intensive (because it relies on pretrained models). Therefore, a GPU is
-usually necessary. If you don't have access to a GPU, you can use light pretrained representations such as: [tinybert]
+usually necessary. If you don't have access to a GPU, you can use light pretrained representations such as TinyBERT, DistilBERT.
 
 #### Command Line Interface (CLI)
 
 We provide a command line interface (CLI) of BERTScore as well as a python module. For the CLI, you can use it as
 follows:
 
-1. To evaluate English text files:
+1. To evaluate using the comande line
 
-We provide example inputs under `./example`.
+We provide example inputs under `./sample`.
 
-```sh
-bert-score -r example/refs.txt -c example/hyps.txt --lang en
 ```
+export metric=infolm
+export measure_to_use=fisher_rao
+python score_cli.py --ref="samples/refs.txt" --cand="samples/hyps.txt" --metric_name=${metric} --measure_to_use=${measure_to_use}
+ ```
 
-You will get the following output at the end:
+See more options by `python score_cli.py -h`.
 
-roberta-large_L17_no-idf_version=0.3.0(hug_trans=2.3.0) P: 0.957378 R: 0.961325 F1: 0.959333
+1. To evaluate using the a python script
 
-where "roberta-large_L17_no-idf_version=0.3.0(hug_trans=2.3.0)" is the hash code.
+We provide example inputs under `<metric>.py`. For example for BaryScore
 
-Starting from version 0.3.0, we support rescaling the scores with baseline scores
-
-```sh
-bert-score -r example/refs.txt -c example/hyps.txt --lang en --rescale_with_baseline
 ```
+metric_call = BaryScoreMetric()
 
-2. To evaluate text files in other languages:
+ref = [
+        'I like my cakes very much',
+        'I hate these cakes!']
+hypothesis = ['I like my cakes very much',
+                  'I like my cakes very much']
 
-We currently support the 104 languages in multilingual
-BERT ([full list](https://github.com/google-research/bert/blob/master/multilingual.md#list-of-languages)).
-
-Please specify the two-letter abbreviation of the language. For instance, using `--lang zh` for Chinese text.
-
-See more options by `bert-score -h`.
-
-3. To load your own custom model:
-   Please specify the path to the model and the number of layers to use by `--model` and `--num_layers`.
-
-```sh
-bert-score -r example/refs.txt -c example/hyps.txt --model path_to_my_bert --num_layers 9
+metric_call.prepare_idfs(ref, hypothesis)
+final_preds = metric_call.evaluate_batch(ref, hypothesis)
+print(final_preds)
 ```
 
 #### Practical Tips
@@ -119,15 +103,14 @@ bert-score -r example/refs.txt -c example/hyps.txt --model path_to_my_bert --num
   or `sent = re.sub(r'\s+', ' ', sent)`.
 * Using inverse document frequency (idf) on the reference sentences to weigh word importance may correlate better with
   human judgment. However, when the set of reference sentences become too small, the idf score would become
-  inaccurate/invalid. To use idf, please set `--idf` when using the CLI tool or
-  `idf=True` when calling `bert_score.score` function.
-* When you are low on GPU memory, consider setting `batch_size` when calling
-  `bert_score.score` function.
-* To use a particular model please set `-m MODEL_TYPE` when using the CLI tool or `model_type=MODEL_TYPE` when
-  calling `bert_score.score` function.
-* We tune layer to use based on WMT16 metric evaluation dataset. You may use a different layer by setting `-l LAYER`
-  or `num_layers=LAYER`. To tune the best layer for your custom model, please follow the instructions
-  in [tune_layers](tune_layers) folder.
-* __Limitation__: Because pretrained representations have learned positional embeddings with
-  max length 512, our scores are undefined between sentences longer than 510 (512 after adding \[CLS\] and \[SEP\] tokens)
-  . The sentences longer than this will be truncated. Please consider using larger models which can support much longer inputs.
+  inaccurate/invalid. To use idf, please set `--idf` when using the CLI tool.
+* When you are low on GPU memory, consider setting `batch_size` to a low number.
+
+#### Practical Limitation
+
+* Because pretrained representations have learned positional embeddings with max length 512, our scores are undefined
+  between sentences longer than 510 (512 after adding \[CLS\] and \[SEP\] tokens)
+  . The sentences longer than this will be truncated. Please consider using larger models which can support much longer
+  inputs.
+
+#### Acknowledgements
