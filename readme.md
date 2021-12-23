@@ -1,6 +1,8 @@
 # NLG evaluation via Statistical Measures of Similarity: BaryScore, DepthScore, InfoLM
 
-Automatic Evaluation Metric described in the papers [BaryScore](https://arxiv.org/abs/2108.12463), [DepthScore](https://arxiv.org/abs/2103.12711), [InfoLM](https://arxiv.org/abs/2112.01589) (AAAI2022)
+Automatic Evaluation Metric described in the papers [BaryScore](https://arxiv.org/abs/2108.12463) (EMNLP 2021)
+, [DepthScore](https://arxiv.org/abs/2103.12711) (Submitted), [InfoLM](https://arxiv.org/abs/2112.01589) (AAAI2022)
+
 #### Authors:
 
 * [Pierre Colombo](https://scholar.google.com/citations?user=yPoMt8gAAAAJ&hl=fr)
@@ -57,9 +59,9 @@ If you find this repo useful, please cite our papers:
 
 For each of the proposed metric, we provide
 
-
 Running our metrics can be computationally intensive (because it relies on pretrained models). Therefore, a GPU is
-usually necessary. If you don't have access to a GPU, you can use light pretrained representations such as TinyBERT, DistilBERT.
+usually necessary. If you don't have access to a GPU, you can use light pretrained representations such as TinyBERT,
+DistilBERT.
 
 #### Command Line Interface (CLI)
 
@@ -78,7 +80,7 @@ python score_cli.py --ref="samples/refs.txt" --cand="samples/hyps.txt" --metric_
 
 See more options by `python score_cli.py -h`.
 
-1. To evaluate using the a python script
+2. To evaluate using a python script
 
 We provide example inputs under `<metric>.py`. For example for BaryScore
 
