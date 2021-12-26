@@ -31,6 +31,9 @@ introduced [here](https://arxiv.org/abs/2103.12711).
 </figure>
 </div>
 
+
+
+
 This metric has been tested on Data2text and Summarization.
 
 #### BaryScore (EMNLP 2021)
