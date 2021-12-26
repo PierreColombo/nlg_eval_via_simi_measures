@@ -30,6 +30,8 @@ computed using the pseudo metric  <img src="https://render.githubusercontent.com
 </figure>
 </div>
 
+This metric has been tested on Data2text and Summarization.
+
 #### BaryScore (EMNLP 2021)
 [BaryScore](https://arxiv.org/abs/2108.12463) is  <u>a multi-layers metric</u> base on pretrained contextualized representations. Similar to [MoverScore](https://arxiv.org/abs/1909.02622) 
 it aggregates the layers of Bert before computing a similarity score. By
@@ -42,6 +44,9 @@ BaryScore aggregates the different outputs through the Wasserstein space topolog
 <figcaption>BaryScore (left) vs MoverScore (right)</figcaption>
 </figure>
 </div>
+
+This metric has been tested on Data2text, Summarization, Image captioning and NMT.
+
 
 #### InfoLM (AAAI 2022)
 
@@ -57,6 +62,7 @@ The second key ingredient of InfoLM is a measure of information (<img src="https
 </figure>
 </div>
 
+InfoLM is flexible as it can adapte to different criteria using different measures of information. This metric has been tested on Data2text and Summarization.
 
 ### References
 
