@@ -45,8 +45,11 @@ BaryScore aggregates the different outputs through the Wasserstein space topolog
 
 #### InfoLM (AAAI 2022)
 
-InfoLM is a metric based on a  <u> pretrained language model </u> (<img src="https://render.githubusercontent.com/render/math?math=p_\Omega">) that given an input sentence S mask at position i (<img src="https://render.githubusercontent.com/render/math?math=[S]^i">) outputs a distribution over the vocabulary  (<img src="https://render.githubusercontent.com/render/math?math=p_\Omega">) that given an input sentence S mask at position i outputs a discret probability distribution  (<img src="https://render.githubusercontent.com/render/math?math=p_\Omega">) that given an input sentence S mask at position i outputs a discret probability distribution (<img src="https://render.githubusercontent.com/render/math?math=p_\Omega(\cdot | [S]^i)">) over the vocabulary (<img src="https://render.githubusercontent.com/render/math?math=\Omega">).
-
+InfoLM is a metric based on a  <u> pretrained language model (PLM) </u> (<img src="https://render.githubusercontent.com/render/math?math=p_\Omega">). Given an input sentence S mask at position i (<img src="https://render.githubusercontent.com/render/math?math=[S]^i">), the PLM outputs a discret probability distribution (<img src="https://render.githubusercontent.com/render/math?math=p_\Omega(\cdot | [S]^i)">) over the vocabulary (<img src="https://render.githubusercontent.com/render/math?math=\Omega">).
+The second key ingredient of InfoLM is a measure of information (<img src="https://render.githubusercontent.com/render/math?math=\mathcal{I} : [0,1]^{|\mathbf{\Omega}|} \times [0,1]^{|\mathbf{\Omega}|}">) that computes a measure of similarity between the aggregated distributions. Formally, InfoLM involes 3 steps:
+* toto
+* toto
+* toto
 <div align="center">
 <figure>
     <img style="width:100%" src="images/infolm.jpeg">
