@@ -9,10 +9,20 @@ Automatic Evaluation Metric described in the papers [BaryScore](https://arxiv.or
 * [Guillaume Staerman](https://scholar.google.com/citations?user=Zb2ax0wAAAAJ&hl=fr)
 
 ### Overview
+We start by giving an overview of the proposed metrics.
 
-* BaryScore
-* DepthScore
-* InfoLM
+#### DepthScore
+DepthScore is a single layer metric based on pretrained contextualized representation. Similar to BertScore it embeds 
+both candidate (C: It is freezing this morning) and the reference (R: The weather is cold today) using 
+a single layer of Bert to obtain discrete probability measures $$\begin{equation} \hat{\mu}_{.,l}^R  \end{equation}$$
+and compute a similarity score.  
+
+![img.png](img.png)
+
+#### BaryScore
+
+
+####InfoLM
 
 If you find this repo useful, please cite our papers:
 
