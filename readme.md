@@ -30,8 +30,8 @@ computed using the pseudo metric  <img src="https://render.githubusercontent.com
 </figure>
 </div>
 
-#### BaryScore
-BaryScore is  <u>a multi-layers metric</u> base on pretrained contextualized representations. Similar to [MoverScore](https://arxiv.org/abs/1909.02622) 
+#### BaryScore (EMNLP 2021)
+[BaryScore](https://arxiv.org/abs/2108.12463) is  <u>a multi-layers metric</u> base on pretrained contextualized representations. Similar to [MoverScore](https://arxiv.org/abs/1909.02622) 
 it aggregates the layers of Bert before computing a similarity score. By
 modelling the layer output of deep contextualized embeddings as a probability distribution rather than by a vector embedding; 
 BaryScore aggregates the different outputs through the Wasserstein space topology. MoverScore (right) leverages the information available in other layers by aggregating the layers using a [power mean](https://arxiv.org/abs/1803.01400) and then use a Wasserstein distance which introduces a discrepancy. 
@@ -43,7 +43,9 @@ BaryScore aggregates the different outputs through the Wasserstein space topolog
 </figure>
 </div>
 
-#### InfoLM
+#### InfoLM (AAAI 2022)
+
+InfoLM 
 
 <div align="center">
 <figure>
