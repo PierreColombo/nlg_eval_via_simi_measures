@@ -45,7 +45,7 @@ BaryScore aggregates the different outputs through the Wasserstein space topolog
 
 #### InfoLM (AAAI 2022)
 
-InfoLM 
+InfoLM is a metric based on a  <u> pretrained language model </u> (<img src="https://render.githubusercontent.com/render/math?math=p_\Omega">) that given an input sentence S mask at position i (<img src="https://render.githubusercontent.com/render/math?math=[S]^i">) outputs a distribution over the vocabulary  (<img src="https://render.githubusercontent.com/render/math?math=p_\Omega">) that given an input sentence S mask at position i outputs a discret probability distribution  (<img src="https://render.githubusercontent.com/render/math?math=p_\Omega">) that given an input sentence S mask at position i outputs a discret probability distribution (<img src="https://render.githubusercontent.com/render/math?math=p_\Omega(\cdot | [S]^i)">) over the vocabulary (<img src="https://render.githubusercontent.com/render/math?math=\Omega">).
 
 <div align="center">
 <figure>
