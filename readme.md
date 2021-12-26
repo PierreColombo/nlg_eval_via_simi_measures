@@ -22,6 +22,8 @@ and  <img src="https://render.githubusercontent.com/render/math?math=\hat{\mu}_{
 computed using the pseudo
 metric  <img src="https://render.githubusercontent.com/render/math?math=DR_{p,\varepsilon}(\hat{\mu}_{.,l}^C,\hat{\mu}_{.,l}^R)">
 introduced [here](https://arxiv.org/abs/2103.12711).
+
+
 <div align="center">
 <figure>
     <img style="width:50%" src="images/depthscore.png">
