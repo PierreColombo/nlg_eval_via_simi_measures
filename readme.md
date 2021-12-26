@@ -17,12 +17,12 @@ We start by giving an overview of the proposed metrics.
 
 #### DepthScore
 
-DepthScore is a single layer metric based on pretrained contextualized representation. Similar to BertScore it embeds
+DepthScore is <u>a single layer metric</u> based on pretrained contextualized representations. Similar to [BertScore](https://arxiv.org/abs/1904.09675) it embeds
 both candidate (C: It is freezing this morning) and the reference (R: The weather is cold today) using a single layer of
 Bert to obtain discrete probability
 measures <img src="https://render.githubusercontent.com/render/math?math=\hat{\mu}_{.,l}^R">
 and  <img src="https://render.githubusercontent.com/render/math?math=\hat{\mu}_{.,l}^C">. Then a similarity score is
-computed using the pseudo metric introduce [here](https://arxiv.org/abs/2103.12711).
+computed using the pseudo metric  <img src="https://render.githubusercontent.com/render/math?math=DR_{p,\varepsilon}(\hat{\mu}_{.,l}^C,\hat{\mu}_{.,l}^R)"> introduce [here](https://arxiv.org/abs/2103.12711).
 <div align="center">
 <figure>
     <img style="width:50%" src="images/depthscore.png">
@@ -31,10 +31,12 @@ computed using the pseudo metric introduce [here](https://arxiv.org/abs/2103.127
 </div>
 
 #### BaryScore
+BaryScore is  <u>a multi-layers metric</u> base on pretrained contextualized representations. Similar to [MoverScore](https://arxiv.org/abs/1909.02622) 
+it aggregates
 
 <div align="center">
 <figure>
-    <img style="width:50%" src="images/baryscore.jpeg">
+    <img style="width:100%" src="images/baryscore.jpeg">
 <figcaption>BaryScore (left) vs MoverScore (right)</figcaption>
 </figure>
 </div>
