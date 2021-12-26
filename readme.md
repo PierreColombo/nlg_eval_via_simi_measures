@@ -159,3 +159,7 @@ See more options by `python score_cli.py -h`.
   inputs.
 
 #### Acknowledgements
+
+Our research was granted access to the HPC resources of
+IDRIS under the allocation 2021-AP010611665 as well as
+under the project 2021-101838 made by GENCI.
