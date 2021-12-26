@@ -25,7 +25,7 @@ and  <img src="https://render.githubusercontent.com/render/math?math=\hat{\mu}_{
 computed using the pseudo metric introduce [here](https://arxiv.org/abs/2103.12711).
 <div align="center">
 <figure>
-    <img style="width:100%" src="images/depthscore.png">
+    <img style="width:50%" src="images/depthscore.png">
 <figcaption>Depth Score</figcaption>
 </figure>
 </div>
@@ -34,7 +34,7 @@ computed using the pseudo metric introduce [here](https://arxiv.org/abs/2103.127
 
 <div align="center">
 <figure>
-    <img style="width:100%" src="images/baryscore.jpeg">
+    <img style="width:50%" src="images/baryscore.jpeg">
 <figcaption>BaryScore (left) vs MoverScore (right)</figcaption>
 </figure>
 </div>
