@@ -1,10 +1,5 @@
-header-includes: |
-    \usepackage{tikz,pgfplots}
-    \usepackage{fancyhdr}
-    \pagestyle{fancy}
-    \fancyhead[CO,CE]{This is fancy}
-    \fancyfoot[CO,CE]{So is this}
-    \fancyfoot[LE,RO]{\thepage}
+header-includes: | \usepackage{tikz,pgfplots} \usepackage{fancyhdr} \pagestyle{fancy} \fancyhead[CO,CE]{This is fancy}
+\fancyfoot[CO,CE]{So is this} \fancyfoot[LE,RO]{\thepage}
 
 # NLG evaluation via Statistical Measures of Similarity: BaryScore, DepthScore, InfoLM
 
@@ -17,21 +12,42 @@ Automatic Evaluation Metric described in the papers [BaryScore](https://arxiv.or
 * [Guillaume Staerman](https://scholar.google.com/citations?user=Zb2ax0wAAAAJ&hl=fr)
 
 ### Overview
+
 We start by giving an overview of the proposed metrics.
 
 #### DepthScore
-DepthScore is a single layer metric based on pretrained contextualized representation. Similar to BertScore it embeds 
-both candidate (C: It is freezing this morning) and the reference (R: The weather is cold today) using 
-a single layer of Bert to obtain discrete probability measures <img src="https://render.githubusercontent.com/render/math?math=\hat{\mu}_{.,l}^R">
-and  <img src="https://render.githubusercontent.com/render/math?math=\hat{\mu}_{.,l}^C">. Then a similarity score is computed using the pseudo metric introduce [here](https://arxiv.org/abs/2103.12711). 
-<p align="center" width="100%">
-    <img width="33%" src="images/depthscore.png">
-</p>
+
+DepthScore is a single layer metric based on pretrained contextualized representation. Similar to BertScore it embeds
+both candidate (C: It is freezing this morning) and the reference (R: The weather is cold today) using a single layer of
+Bert to obtain discrete probability
+measures <img src="https://render.githubusercontent.com/render/math?math=\hat{\mu}_{.,l}^R">
+and  <img src="https://render.githubusercontent.com/render/math?math=\hat{\mu}_{.,l}^C">. Then a similarity score is
+computed using the pseudo metric introduce [here](https://arxiv.org/abs/2103.12711).
+<div align="center">
+<figure>
+    <img style="width:100%" src="images/depthscore.png">
+<figcaption>Depth Score</figcaption>
+</figure>
+</div>
 
 #### BaryScore
 
+<div align="center">
+<figure>
+    <img style="width:100%" src="images/baryscore.jpeg">
+<figcaption>BaryScore (left) vs MoverScore (right)</figcaption>
+</figure>
+</div>
 
-####InfoLM
+#### InfoLM
+
+<div align="center">
+<figure>
+    <img style="width:100%" src="images/infolm.jpeg">
+<figcaption>InfoLM</figcaption>
+</figure>
+</div>
+
 
 If you find this repo useful, please cite our papers:
 
