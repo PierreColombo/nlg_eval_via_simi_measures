@@ -58,6 +58,8 @@ The second key ingredient of InfoLM is a measure of information (<img src="https
 </div>
 
 
+### References
+
 If you find this repo useful, please cite our papers:
 
 ```
