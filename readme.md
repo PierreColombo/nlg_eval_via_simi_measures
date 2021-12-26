@@ -26,7 +26,7 @@ introduced [here](https://arxiv.org/abs/2103.12711).
 
 <div align="center">
 <figure>
-    <img style="width:100%" src="images/depthscore.png">
+    <img style="width:50%" src="images/depthscore.png">
 <figcaption> Depth Score </figcaption>
     
 </figure>
