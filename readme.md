@@ -1,6 +1,3 @@
-header-includes: | \usepackage{tikz,pgfplots} \usepackage{fancyhdr} \pagestyle{fancy} \fancyhead[CO,CE]{This is fancy}
-\fancyfoot[CO,CE]{So is this} \fancyfoot[LE,RO]{\thepage}
-
 # NLG evaluation via Statistical Measures of Similarity: BaryScore, DepthScore, InfoLM
 
 Automatic Evaluation Metric described in the papers [BaryScore](https://arxiv.org/abs/2108.12463) (EMNLP 2021)
@@ -17,12 +14,14 @@ We start by giving an overview of the proposed metrics.
 
 #### DepthScore
 
-DepthScore is <u>a single layer metric</u> based on pretrained contextualized representations. Similar to [BertScore](https://arxiv.org/abs/1904.09675) it embeds
-both candidate (C: It is freezing this morning) and the reference (R: The weather is cold today) using a single layer of
-Bert to obtain discrete probability
+DepthScore is <u>a single layer metric</u> based on pretrained contextualized representations. Similar
+to [BertScore](https://arxiv.org/abs/1904.09675) it embeds both candidate (C: It is freezing this morning) and the
+reference (R: The weather is cold today) using a single layer of Bert to obtain discrete probability
 measures <img src="https://render.githubusercontent.com/render/math?math=\hat{\mu}_{.,l}^R">
 and  <img src="https://render.githubusercontent.com/render/math?math=\hat{\mu}_{.,l}^C">. Then a similarity score is
-computed using the pseudo metric  <img src="https://render.githubusercontent.com/render/math?math=DR_{p,\varepsilon}(\hat{\mu}_{.,l}^C,\hat{\mu}_{.,l}^R)"> introduce [here](https://arxiv.org/abs/2103.12711).
+computed using the pseudo
+metric  <img src="https://render.githubusercontent.com/render/math?math=DR_{p,\varepsilon}(\hat{\mu}_{.,l}^C,\hat{\mu}_{.,l}^R)">
+introduced [here](https://arxiv.org/abs/2103.12711).
 <div align="center">
 <figure>
     <img style="width:50%" src="images/depthscore.png">
@@ -33,10 +32,14 @@ computed using the pseudo metric  <img src="https://render.githubusercontent.com
 This metric has been tested on Data2text and Summarization.
 
 #### BaryScore (EMNLP 2021)
-[BaryScore](https://arxiv.org/abs/2108.12463) is  <u>a multi-layers metric</u> base on pretrained contextualized representations. Similar to [MoverScore](https://arxiv.org/abs/1909.02622) 
-it aggregates the layers of Bert before computing a similarity score. By
-modelling the layer output of deep contextualized embeddings as a probability distribution rather than by a vector embedding; 
-BaryScore aggregates the different outputs through the Wasserstein space topology. MoverScore (right) leverages the information available in other layers by aggregating the layers using a [power mean](https://arxiv.org/abs/1803.01400) and then use a Wasserstein distance (<img src="https://render.githubusercontent.com/render/math?math=W">) which introduces a discrepancy. 
+
+[BaryScore](https://arxiv.org/abs/2108.12463) is  <u>a multi-layers metric</u> base on pretrained contextualized
+representations. Similar to [MoverScore](https://arxiv.org/abs/1909.02622)
+it aggregates the layers of Bert before computing a similarity score. By modelling the layer output of deep
+contextualized embeddings as a probability distribution rather than by a vector embedding; BaryScore aggregates the
+different outputs through the Wasserstein space topology. MoverScore (right) leverages the information available in
+other layers by aggregating the layers using a [power mean](https://arxiv.org/abs/1803.01400) and then use a Wasserstein
+distance (<img src="https://render.githubusercontent.com/render/math?math=W">) which introduces a discrepancy.
 
 <div align="center">
 <figure>
@@ -47,14 +50,23 @@ BaryScore aggregates the different outputs through the Wasserstein space topolog
 
 This metric has been tested on Data2text, Summarization, Image captioning and NMT.
 
-
 #### InfoLM (AAAI 2022)
 
-[InfoLM](https://arxiv.org/abs/2112.01589) is a metric based on a  <u> pretrained language model (PLM) </u> (<img src="https://render.githubusercontent.com/render/math?math=p_\Omega">). Given an input sentence S mask at position i (<img src="https://render.githubusercontent.com/render/math?math=[S]^i">), the PLM outputs a discret probability distribution (<img src="https://render.githubusercontent.com/render/math?math=p_\Omega(\cdot | [S]^i)">) over the vocabulary (<img src="https://render.githubusercontent.com/render/math?math=\Omega">).
-The second key ingredient of InfoLM is a measure of information (<img src="https://render.githubusercontent.com/render/math?math=\mathcal{I} : [0,1]^{|\mathbf{\Omega}|} \times [0,1]^{|\mathbf{\Omega}|}">) that computes a measure of similarity between the aggregated distributions. Formally, InfoLM involes 3 steps:
-* <b>1. Compute individual distributions using <img src="https://render.githubusercontent.com/render/math?math=p_\Omega"> for the candidate C and the reference R.</b>
+[InfoLM](https://arxiv.org/abs/2112.01589) is a metric based on a  <u> pretrained language model (
+PLM) </u> (<img src="https://render.githubusercontent.com/render/math?math=p_\Omega">). Given an input sentence S mask
+at position i (<img src="https://render.githubusercontent.com/render/math?math=[S]^i">), the PLM outputs a discret
+probability distribution (<img src="https://render.githubusercontent.com/render/math?math=p_\Omega(\cdot | [S]^i)">)
+over the vocabulary (<img src="https://render.githubusercontent.com/render/math?math=\Omega">). The second key
+ingredient of InfoLM is a measure of
+information (<img src="https://render.githubusercontent.com/render/math?math=\mathcal{I} : [0,1]^{|\mathbf{\Omega}|} \times [0,1]^{|\mathbf{\Omega}|}">)
+that computes a measure of similarity between the aggregated distributions. Formally, InfoLM involes 3 steps:
+
+* <b>1. Compute individual distributions
+  using <img src="https://render.githubusercontent.com/render/math?math=p_\Omega"> for the candidate C and the reference
+  R.</b>
 * <b>2. Aggregate individual distributions using a weighted sum.</b>
 * <b>3. Compute similarity using <img src="https://render.githubusercontent.com/render/math?math=\mathcal{I}">. </b>
+
 <div align="center">
 <figure>
     <img style="width:100%" src="images/infolm.jpeg">
@@ -62,7 +74,8 @@ The second key ingredient of InfoLM is a measure of information (<img src="https
 </figure>
 </div>
 
-InfoLM is flexible as it can adapte to different criteria using different measures of information. This metric has been tested on Data2text and Summarization.
+InfoLM is flexible as it can adapte to different criteria using different measures of information. This metric has been
+tested on Data2text and Summarization.
 
 ### References
 
@@ -160,6 +173,5 @@ See more options by `python score_cli.py -h`.
 
 #### Acknowledgements
 
-Our research was granted access to the HPC resources of
-IDRIS under the allocation 2021-AP010611665 as well as
-under the project 2021-101838 made by GENCI.
+Our research was granted access to the HPC resources of IDRIS under the allocation 2021-AP010611665 as well as under the
+project 2021-101838 made by GENCI.
