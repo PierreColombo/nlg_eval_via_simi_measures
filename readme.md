@@ -22,10 +22,11 @@ We start by giving an overview of the proposed metrics.
 #### DepthScore
 DepthScore is a single layer metric based on pretrained contextualized representation. Similar to BertScore it embeds 
 both candidate (C: It is freezing this morning) and the reference (R: The weather is cold today) using 
-a single layer of Bert to obtain discrete probability measures $$\begin{equation} \hat{\mu}_{.,l}^R  \end{equation}$$
-and compute a similarity score.  
-
-![img.png](img.png)
+a single layer of Bert to obtain discrete probability measures <img src="https://render.githubusercontent.com/render/math?math=\hat{\mu}_{.,l}^R">
+and  <img src="https://render.githubusercontent.com/render/math?math=\hat{\mu}_{.,l}^C">. Then a similarity score is computed using the pseudo metric introduce [here](https://arxiv.org/abs/2103.12711). 
+<p align="center" width="100%">
+    <img width="33%" src="images/depthscore.png">
+</p>
 
 #### BaryScore
 
