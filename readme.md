@@ -19,7 +19,7 @@ This repository deals with automatic evaluation of NLG and addresses the special
 <figure>
     <img style="width:50%" src="images/example.jpeg">
     <div align="center">
-<figcaption> Example for metrics: similar sentences should have a high scores, dissimilar should have a low scores according to m. </figcaption>
+<figcaption> Metric examples: similar sentences should have a high score, dissimilar should have a low score according to m. </figcaption>
     </div>
 </figure>
 </div>
