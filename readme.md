@@ -12,7 +12,7 @@ Automatic Evaluation Metric described in the papers [BaryScore](https://arxiv.or
 
 ## Goal :
 
-This repository deals with automatic evaluation of NLG and addresses the special case of reference based evaluation. The goal is to build a metric m such that $m : \mathcal{S} \times \mathcal{S} \rightarrow [0,1]$
+This repository deals with automatic evaluation of NLG and addresses the special case of reference based evaluation. The goal is to build a metric m such that <img src="https://render.githubusercontent.com/render/math?math=m : \mathcal{S} \times \mathcal{S} \rightarrow [0,1]">
 
 ### Overview
 
@@ -26,7 +26,7 @@ reference (R: The weather is cold today) using a single layer of Bert to obtain 
 measures <img src="https://render.githubusercontent.com/render/math?math=\hat{\mu}_{.,l}^R">
 and  <img src="https://render.githubusercontent.com/render/math?math=\hat{\mu}_{.,l}^C">. Then, a similarity score is
 computed using the pseudo
-metric  <img src="https://render.githubusercontent.com/render/math?math=DR_{p,\varepsilon}(\hat{\mu}_{.,l}^C,\hat{\mu}_{.,l}^R)">
+metric  <img src="https://render.githubusercontent.com/render/math?math=DR_{p,\varepsilon}(\hat{\mu}_{.,l}^C,\hat{\mu}_{.,l}^R)
 introduced [here](https://arxiv.org/abs/2103.12711).
 
 
