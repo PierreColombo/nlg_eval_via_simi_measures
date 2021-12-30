@@ -37,7 +37,7 @@ reference (R: The weather is cold today) using a single layer of Bert to obtain 
 measures <img src="https://render.githubusercontent.com/render/math?math=\hat{\mu}_{.,l}^R">
 and  <img src="https://render.githubusercontent.com/render/math?math=\hat{\mu}_{.,l}^C">. Then, a similarity score is
 computed using the pseudo
-metric  <img src="https://render.githubusercontent.com/render/math?math=DR_{p,\varepsilon}(\hat{\mu}_{.,l}^C,\hat{\mu}_{.,l}^R)
+metric  <img src="https://render.githubusercontent.com/render/math?math=DR_{p,\varepsilon}(\hat{\mu}_{.,l}^C,\hat{\mu}_{.,l}^R)">
 introduced [here](https://arxiv.org/abs/2103.12711).
 
 
