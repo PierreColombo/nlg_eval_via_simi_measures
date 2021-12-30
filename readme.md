@@ -25,11 +25,11 @@ This repository deals with automatic evaluation of NLG and addresses the special
 </div>
 
 
-### Overview
+## Overview
 
 We start by giving an overview of the proposed metrics.
 
-#### DepthScore
+### DepthScore
 
 DepthScore is <u>a single layer metric</u> based on pretrained contextualized representations. Similar
 to [BertScore](https://arxiv.org/abs/1904.09675), it embeds both the candidate (C: It is freezing this morning) and the
@@ -55,7 +55,7 @@ introduced [here](https://arxiv.org/abs/2103.12711).
 
 This statistical measure has been tested on Data2text and Summarization.
 
-#### BaryScore (EMNLP 2021)
+### BaryScore (EMNLP 2021)
 
 [BaryScore](https://arxiv.org/abs/2108.12463) is  <u>a multi-layers metric</u> based on pretrained contextualized
 representations. Similar to [MoverScore](https://arxiv.org/abs/1909.02622),
@@ -74,7 +74,7 @@ distance (<img src="https://render.githubusercontent.com/render/math?math=W">).
 
 This statistical measure has been tested on Data2text, Summarization, Image captioning and NMT.
 
-#### InfoLM (AAAI 2022)
+### InfoLM (AAAI 2022)
 
 [InfoLM](https://arxiv.org/abs/2112.01589) is a metric based on a  <u> pretrained language model (
 PLM) </u> (<img src="https://render.githubusercontent.com/render/math?math=p_\Omega">). Given an input sentence S mask
@@ -101,7 +101,7 @@ that computes a measure of similarity between the aggregated distributions. Form
 InfoLM is flexible as it can adapte to different criteria using different measures of information. This metric has been
 tested on Data2text and Summarization.
 
-### References
+## References
 
 If you find this repo useful, please cite our papers:
 
@@ -133,9 +133,9 @@ If you find this repo useful, please cite our papers:
 }
 ```
 
-### Usage
+## Usage
 
-#### Python Function
+### Python Function
 
 Running our metrics can be computationally intensive (because it relies on pretrained models). Therefore, a GPU is
 usually necessary. If you don't have access to a GPU, you can use light pretrained representations such as TinyBERT,
@@ -157,7 +157,7 @@ final_preds = metric_call.evaluate_batch(ref, hypothesis)
 print(final_preds)
 ```
 
-#### Command Line Interface (CLI)
+### Command Line Interface (CLI)
 
 We provide a command line interface (CLI) of BERTScore as well as a python module. For the CLI, you can use it as
 follows:
@@ -170,7 +170,7 @@ CUDA_VISIBLE_DEVICES=0 python score_cli.py --ref="samples/refs.txt" --cand="samp
 
 See more options by `python score_cli.py -h`.
 
-#### Practical Tips
+### Practical Tips
 
 * Unlike BERT, RoBERTa uses GPT2-style tokenizer which creates addition " " tokens when there are multiple spaces
   appearing together. It is recommended to remove addition spaces by `sent = re.sub(r' +', ' ', sent)`
@@ -180,14 +180,14 @@ See more options by `python score_cli.py -h`.
   inaccurate/invalid. To use idf, please set `--idf` when using the CLI tool.
 * When you are low on GPU memory, consider setting `batch_size` to a low number.
 
-#### Practical Limitation
+### Practical Limitation
 
 * Because pretrained representations have learned positional embeddings with max length 512, our scores are undefined
   between sentences longer than 510 (512 after adding \[CLS\] and \[SEP\] tokens)
   . The sentences longer than this will be truncated. Please consider using larger models which can support much longer
   inputs.
 
-#### Acknowledgements
+## Acknowledgements
 
 Our research was granted access to the HPC resources of IDRIS under the allocation 2021-AP010611665 as well as under the
 project 2021-101838 made by GENCI.
