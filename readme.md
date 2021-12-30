@@ -3,10 +3,16 @@
 Automatic Evaluation Metric described in the papers [BaryScore](https://arxiv.org/abs/2108.12463) (EMNLP 2021)
 , [DepthScore](https://arxiv.org/abs/2103.12711) (Submitted), [InfoLM](https://arxiv.org/abs/2112.01589) (AAAI2022)
 
+
+
 #### Authors:
 
 * [Pierre Colombo](https://scholar.google.com/citations?user=yPoMt8gAAAAJ&hl=fr)
 * [Guillaume Staerman](https://scholar.google.com/citations?user=Zb2ax0wAAAAJ&hl=fr)
+
+## Goal :
+
+This repository deals with automatic evaluation of NLG and addresses the special case of reference based evaluation. The goal is to build a metric m such that $m : \mathcal{S} \times \mathcal{S} \rightarrow [0,1]$
 
 ### Overview
 
