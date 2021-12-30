@@ -110,7 +110,7 @@ If you find this repo useful, please cite our papers:
 ```
 @article{depth_score,
   title={Depth-based pseudo-metrics between probability distributions},
-  author={Staerman, Guillaume and Mozharovskyi, Pavlo and Cl{\'e}men{\c{c}}on, St{\'e}phan and d'Alch{\'e}-Buc, Florence},
+  author={Staerman, Guillaume and Mozharovskyi, Pavlo and Colombo, Pierre and Cl{\'e}men{\c{c}}on, St{\'e}phan and d'Alch{\'e}-Buc, Florence},
   journal={arXiv preprint arXiv:2103.12711},
   year={2021}
 }
