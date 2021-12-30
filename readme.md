@@ -12,7 +12,18 @@ Automatic Evaluation Metric described in the papers [BaryScore](https://arxiv.or
 
 ## Goal :
 
-This repository deals with automatic evaluation of NLG and addresses the special case of reference based evaluation. The goal is to build a metric m such that <img src="https://render.githubusercontent.com/render/math?math=m : \mathcal{S} \times \mathcal{S} \rightarrow [0,1]">
+This repository deals with automatic evaluation of NLG and addresses the special case of reference based evaluation. The goal is to build a metric m: <img src="https://render.githubusercontent.com/render/math?math=m : \mathcal{S} \times \mathcal{S} \rightarrow \mathcal{R}"> where <img src="https://render.githubusercontent.com/render/math?math=m : \mathcal{S}"> is the space of sentences. An example is given below:
+
+
+<div align="center">
+<figure>
+    <img style="width:50%" src="images/example.png">
+    <div align="center">
+<figcaption> Depth Score </figcaption>
+    </div>
+</figure>
+</div>
+
 
 ### Overview
 
