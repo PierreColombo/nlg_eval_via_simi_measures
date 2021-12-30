@@ -15,10 +15,10 @@ We start by giving an overview of the proposed metrics.
 #### DepthScore
 
 DepthScore is <u>a single layer metric</u> based on pretrained contextualized representations. Similar
-to [BertScore](https://arxiv.org/abs/1904.09675) it embeds both candidate (C: It is freezing this morning) and the
+to [BertScore](https://arxiv.org/abs/1904.09675), it embeds both the candidate (C: It is freezing this morning) and the
 reference (R: The weather is cold today) using a single layer of Bert to obtain discrete probability
 measures <img src="https://render.githubusercontent.com/render/math?math=\hat{\mu}_{.,l}^R">
-and  <img src="https://render.githubusercontent.com/render/math?math=\hat{\mu}_{.,l}^C">. Then a similarity score is
+and  <img src="https://render.githubusercontent.com/render/math?math=\hat{\mu}_{.,l}^C">. Then, a similarity score is
 computed using the pseudo
 metric  <img src="https://render.githubusercontent.com/render/math?math=DR_{p,\varepsilon}(\hat{\mu}_{.,l}^C,\hat{\mu}_{.,l}^R)">
 introduced [here](https://arxiv.org/abs/2103.12711).
@@ -36,17 +36,17 @@ introduced [here](https://arxiv.org/abs/2103.12711).
 
 
 
-This metric has been tested on Data2text and Summarization.
+This statistical measure has been tested on Data2text and Summarization.
 
 #### BaryScore (EMNLP 2021)
 
-[BaryScore](https://arxiv.org/abs/2108.12463) is  <u>a multi-layers metric</u> base on pretrained contextualized
-representations. Similar to [MoverScore](https://arxiv.org/abs/1909.02622)
+[BaryScore](https://arxiv.org/abs/2108.12463) is  <u>a multi-layers metric</u> based on pretrained contextualized
+representations. Similar to [MoverScore](https://arxiv.org/abs/1909.02622),
 it aggregates the layers of Bert before computing a similarity score. By modelling the layer output of deep
 contextualized embeddings as a probability distribution rather than by a vector embedding; BaryScore aggregates the
 different outputs through the Wasserstein space topology. MoverScore (right) leverages the information available in
 other layers by aggregating the layers using a [power mean](https://arxiv.org/abs/1803.01400) and then use a Wasserstein
-distance (<img src="https://render.githubusercontent.com/render/math?math=W">) which introduces a discrepancy.
+distance (<img src="https://render.githubusercontent.com/render/math?math=W">).
 
 <div align="center">
 <figure>
@@ -55,7 +55,7 @@ distance (<img src="https://render.githubusercontent.com/render/math?math=W">) w
 </figure>
 </div>
 
-This metric has been tested on Data2text, Summarization, Image captioning and NMT.
+This statistical measure has been tested on Data2text, Summarization, Image captioning and NMT.
 
 #### InfoLM (AAAI 2022)
 
