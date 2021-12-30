@@ -29,7 +29,7 @@ This repository deals with automatic evaluation of NLG and addresses the special
 
 We start by giving an overview of the proposed metrics.
 
-### DepthScore
+### DepthScore (Submitted)
 
 DepthScore is <u>a single layer metric</u> based on pretrained contextualized representations. Similar
 to [BertScore](https://arxiv.org/abs/1904.09675), it embeds both the candidate (C: It is freezing this morning) and the
