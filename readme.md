@@ -100,18 +100,10 @@ If you find this repo useful, please cite our papers:
 ```
 @inproceedings{colombo-etal-2021-automatic,
     title = "Automatic Text Evaluation through the Lens of {W}asserstein Barycenters",
-    author = "Colombo, Pierre  and
-      Staerman, Guillaume  and
-      Clavel, Chlo{\'e}  and
-      Piantanida, Pablo",
+    author = "Colombo, Pierre  and Staerman, Guillaume  and Clavel, Chlo{\'e}  and Piantanida, Pablo",
     booktitle = "Proceedings of the 2021 Conference on Empirical Methods in Natural Language Processing",
-    month = nov,
     year = "2021",
-    address = "Online and Punta Cana, Dominican Republic",
-    publisher = "Association for Computational Linguistics",
-    url = "https://aclanthology.org/2021.emnlp-main.817",
-    pages = "10450--10466",
-    abstract = "A new metric BaryScore to evaluate text generation based on deep contextualized embeddings (\textit{e.g.}, BERT, Roberta, ELMo) is introduced. This metric is motivated by a new framework relying on optimal transport tools, \textit{i.e.}, Wasserstein distance and barycenter. By modelling the layer output of deep contextualized embeddings as a probability distribution rather than by a vector embedding; this framework provides a natural way to aggregate the different outputs through the Wasserstein space topology. In addition, it provides theoretical grounds to our metric and offers an alternative to available solutions (\textit{e.g.}, MoverScore and BertScore). Numerical evaluation is performed on four different tasks: machine translation, summarization, data2text generation and image captioning. Our results show that BaryScore outperforms other BERT based metrics and exhibits more consistent behaviour in particular for text summarization.",
+    pages = "10450--10466"
 }
 ```
 
