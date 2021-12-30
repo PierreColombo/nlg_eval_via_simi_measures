@@ -141,7 +141,7 @@ Running our metrics can be computationally intensive (because it relies on pretr
 usually necessary. If you don't have access to a GPU, you can use light pretrained representations such as TinyBERT,
 DistilBERT.
 
-We provide example inputs under `<metric>.py`. For example for BaryScore
+We provide example inputs under `<metric_name>.py`. For example for BaryScore
 
 ```
 metric_call = BaryScoreMetric()
