@@ -91,10 +91,10 @@ class DepthScoreMetric:
             ref_tokens_id = batch_refs['input_ids'].cpu().tolist()
             hyp_tokens_id = batch_hyps['input_ids'].cpu().tolist()
 
-            ####################################
-            ## Unbatched BaryScore Prediction ##
-            ####################################
-            for index_sentence in tqdm(range(nb_sentences), 'BaryScore Progress'):
+            ######################################
+            ## Unbatched Depth Score Prediction ##
+            ######################################
+            for index_sentence in tqdm(range(nb_sentences), 'Depth Score Progress'):
                 ref_tokens = [i for i in self.tokenizer.convert_ids_to_tokens(ref_tokens_id[index_sentence],
                                                                               skip_special_tokens=False) if
                               i != self.tokenizer.pad_token]
