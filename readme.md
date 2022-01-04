@@ -1,7 +1,7 @@
 # NLG evaluation via Statistical Measures of Similarity: BaryScore, DepthScore, InfoLM
 
 Automatic Evaluation Metric described in the papers [BaryScore](https://arxiv.org/abs/2108.12463) (EMNLP 2021)
-, [DepthScore](https://arxiv.org/abs/2103.12711) (Submitted), [InfoLM](https://arxiv.org/abs/2112.01589) (AAAI2022).
+, [DepthScore](https://arxiv.org/abs/2103.12711) (Submitted), [InfoLM](https://arxiv.org/abs/2112.01589) (AAAI 2022).
 
 
 
