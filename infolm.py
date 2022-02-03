@@ -19,6 +19,7 @@ class InfoLM:
         :param beta: beta parameter in the ab or beta div
         """
         self.model_name = model_name
+        self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
         self.load_tokenizer_and_model()
         self.use_idf_weights = use_idf_weights
         self.temperature = temperature
@@ -28,7 +29,6 @@ class InfoLM:
         assert self.measure_to_use in ['kl', 'alpha', 'renyi', 'beta', 'ab', 'l1', "l2", "linf", 'fisher_rao']
         if self.measure_to_use in ['alpha', 'ab', 'renyi']: assert alpha is not None
         if self.measure_to_use in ['beta', 'ab']:  assert beta is not None
-        self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
     def prepare_idfs(self, hyps, refs):
         """
