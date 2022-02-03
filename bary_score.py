@@ -197,8 +197,8 @@ class BaryScoreMetric:
                                        log=True)[0]
         wasserstein_sinkhorn = ot.bregman.sinkhorn2(weights_first_barycenter, weights_second_barycenter, C,
                                                     reg=self.sinkhorn_ref, numItermax=10000).tolist()
-        print('wasserstein_distance',wasserstein_distance)
-        print('wasserstein_sinkhorn',wasserstein_sinkhorn)
+        if isinstance(wasserstein_sinkhorn, list):
+            wasserstein_sinkhorn = wasserstein_sinkhorn[0]  # for POT==0.7.0
         return {
             "W": wasserstein_distance,
             "SD": wasserstein_sinkhorn
