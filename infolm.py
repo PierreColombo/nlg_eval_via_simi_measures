@@ -235,7 +235,7 @@ class InfoLM:
                 ids_masked_list = unmasked_data['input_ids'][:, index_to_mask].tolist()
                 tf_idf_term = torch.tensor([idf_dic[id] for id in ids_masked_list]).unsqueeze(-1)
                 idfs.append(tf_idf_term)
-            labels = unmasked_data['input_ids'].clone()
+            labels = unmasked_data['input_ids'].clone().to(self.device)
             masked_indices = torch.zeros_like(labels).to(self.device).bool()
             masked_indices[:, index_to_mask] = 1
             labels[~masked_indices] = -100
