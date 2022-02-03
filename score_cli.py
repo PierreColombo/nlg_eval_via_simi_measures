@@ -95,8 +95,8 @@ def main():
         preds = metric.evaluate_batch(candidate_batch, golden_batch, idf_hyps=idf_hyps, idf_ref=idf_ref)
         all_preds.append(preds)
 
-    logging.info('Preds',preds)
-    logging.info('all_preds',all_preds)
+    logging.info(preds)
+    logging.info(all_preds)
     for k in preds.keys():
         l_preds = []
         for pred in all_preds:
