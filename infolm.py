@@ -64,7 +64,7 @@ class InfoLM:
         model.config.output_hidden_states = True
         model.eval()
         self.tokenizer = tokenizer
-        self.model = model
+        self.model = model.to(self.device)
 
     def _safe_divide(self, numerator, denominator):
         """
