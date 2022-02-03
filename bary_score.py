@@ -194,7 +194,7 @@ class BaryScoreMetric:
         weights_first_barycenter = np.zeros((C.shape[0])) + 1 / C.shape[0]
         weights_second_barycenter = np.zeros((C.shape[1])) + 1 / C.shape[1]
         wasserstein_distance = ot.emd2(weights_first_barycenter, weights_second_barycenter, C,
-                                       log=True)[0]
+                                       log=True)
         wasserstein_sinkhorn = ot.bregman.sinkhorn2(weights_first_barycenter, weights_second_barycenter, C,
                                                     reg=self.sinkhorn_ref, numItermax=10000).tolist()
         return {
