@@ -94,10 +94,10 @@ class BaryScoreMetric:
             ###############################################
             ## Extract Embeddings From Pretrained Models ##
             ###############################################
-            batch_refs = self.tokenizer(batch_refs, return_tensors='pt', padding=True).to(self.device)
+            batch_refs = self.tokenizer(batch_refs, return_tensors='pt', padding=True,truncation=True).to(self.device)
             batch_refs_embeddings_ = model(**batch_refs)[-1]
 
-            batch_hyps = self.tokenizer(batch_hyps, return_tensors='pt', padding=True).to(self.device)
+            batch_hyps = self.tokenizer(batch_hyps, return_tensors='pt', padding=True,truncation=True).to(self.device)
             batch_hyps_embeddings_ = model(**batch_hyps)[-1]
 
             batch_refs_embeddings = [batch_refs_embeddings_[i] for i in list(self.layers_to_consider)]

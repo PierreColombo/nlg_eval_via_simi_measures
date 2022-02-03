@@ -39,6 +39,7 @@ class InfoLM:
         t_refs = self.tokenizer(refs)['input_ids']
         idf_dict_ref = self.ref_list_to_idf(t_refs)
         idf_dict_hyp = self.ref_list_to_idf(t_hyps)
+        self.idf_dict_hyp, self.idf_dict_ref = idf_dict_hyp, idf_dict_ref
         return idf_dict_hyp, idf_dict_ref
 
     def ref_list_to_idf(self, input_refs):
@@ -266,7 +267,7 @@ class InfoLM:
             final_distribution.append(dict_logits_distribution)
         return final_distribution, idfs
 
-    def evaluate_batch(self, batch_hyps, batch_refs, idf_hyps=None, idf_ref=None):
+    def evaluate_batch(self, batch_hyps, batch_refs):
         """
         :param batch_hyps: hypothesis list of string sentences
         :param batch_refs: reference list of string sentences
@@ -274,11 +275,15 @@ class InfoLM:
         :param idf_ref: idfs of references computed at corpus level
         :return: dictionary of scores
         """
-        idf_hyps[self.model.config.pad_token_id] = 0  # for padding
-        idf_ref[self.model.config.pad_token_id] = 0
+        if self.use_idf_weights:
+            idf_hyps, idf_ref = self.idf_hyps, self.idf_ref
+            idf_hyps[self.model.config.pad_token_id] = 0  # for padding
+            idf_ref[self.model.config.pad_token_id] = 0
         with torch.no_grad():
-            dict_final_distribution_batch_refs, idfs_ref = self.get_distribution(batch_refs, idf_ref)
-            dict_final_distribution_batch_hypothesis, idfs_hyp = self.get_distribution(batch_hyps, idf_hyps)
+            dict_final_distribution_batch_refs, idfs_ref = self.get_distribution(batch_refs,
+                                                                                 idf_ref if self.use_idf_weights else None)
+            dict_final_distribution_batch_hypothesis, idfs_hyp = self.get_distribution(batch_hyps,
+                                                                                       idf_hyps if self.use_idf_weights else None)
         mask_ref = self.tokenizer(batch_refs, return_tensors="pt", padding=True, truncation=True)['input_ids']
         mask_hyps = self.tokenizer(batch_hyps, return_tensors="pt", padding=True, truncation=True)['input_ids']
         mask_ref = ((mask_ref.eq(self.tokenizer.sep_token_id) |
@@ -336,6 +341,5 @@ if __name__ == '__main__':
 
         idf_ref, idf_hypot = metric.prepare_idfs(ref, hypothesis)
 
-        final_preds = metric.evaluate_batch(ref, hypothesis, idf_ref=idf_ref,
-                                            idf_hyps=idf_hypot)
+        final_preds = metric.evaluate_batch(ref, hypothesis)
         print(final_preds)
