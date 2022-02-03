@@ -276,7 +276,7 @@ class InfoLM:
         :return: dictionary of scores
         """
         if self.use_idf_weights:
-            idf_hyps, idf_ref = self.idf_hyps, self.idf_ref
+            idf_hyps, idf_ref = self.idf_dict_hyp, self.idf_dict_ref
             idf_hyps[self.model.config.pad_token_id] = 0  # for padding
             idf_ref[self.model.config.pad_token_id] = 0
         with torch.no_grad():
