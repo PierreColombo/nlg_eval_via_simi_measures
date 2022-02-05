@@ -94,10 +94,10 @@ class BaryScoreMetric:
             ###############################################
             ## Extract Embeddings From Pretrained Models ##
             ###############################################
-            batch_refs = self.tokenizer(batch_refs, return_tensors='pt', padding=True,truncation=True).to(self.device)
+            batch_refs = self.tokenizer(batch_refs, return_tensors='pt', padding=True, truncation=True).to(self.device)
             batch_refs_embeddings_ = model(**batch_refs)[-1]
 
-            batch_hyps = self.tokenizer(batch_hyps, return_tensors='pt', padding=True,truncation=True).to(self.device)
+            batch_hyps = self.tokenizer(batch_hyps, return_tensors='pt', padding=True, truncation=True).to(self.device)
             batch_hyps_embeddings_ = model(**batch_hyps)[-1]
 
             batch_refs_embeddings = [batch_refs_embeddings_[i] for i in list(self.layers_to_consider)]
@@ -126,8 +126,8 @@ class BaryScoreMetric:
                                                                               skip_special_tokens=False) if
                               i != self.tokenizer.pad_token]
 
-                ref_ids = [k for k, w in enumerate(ref_tokens) if True]
-                hyp_ids = [k for k, w in enumerate(hyp_tokens) if True]
+                ref_ids = [k for k, w in enumerate(ref_tokens)]
+                hyp_ids = [k for k, w in enumerate(hyp_tokens)]
 
                 # With stop words
                 ref_idf_i = [idf_ref[i] for i in ref_ids_idf[ref_ids]]
@@ -140,6 +140,13 @@ class BaryScoreMetric:
                 measures_locations_hyps = hyp_embedding_i.permute(1, 0, 2).cpu().numpy().tolist()
                 measures_locations_hyps = [np.array(i) for i in measures_locations_hyps]
 
+                # ADDED
+                measures_locations_ref = [np.array(i) for i in
+                                          np.array(measures_locations_ref).transpose(1, 0, 2).tolist()]
+                measures_locations_hyps = [np.array(i) for i in
+                                           np.array(measures_locations_hyps).transpose(1, 0,
+                                                                                       2).tolist()]
+
                 if self.use_idfs:
                     #########################
                     ## Use TF-IDF weights  ##
@@ -150,10 +157,7 @@ class BaryScoreMetric:
                     #####################
                     ## Uniform Weights ##
                     #####################
-                    uniform_refs = [1 / len(measures_locations_ref)] * len(measures_locations_ref)
-                    uniform_hyps = [1 / len(measures_locations_hyps)] * len(measures_locations_hyps)
-                    baryscore = self.baryscore(measures_locations_ref, measures_locations_hyps, uniform_refs,
-                                               uniform_hyps)
+                    baryscore = self.baryscore(measures_locations_ref, measures_locations_hyps, None, None)
 
                 for key, value in baryscore.items():
                     dict_score['baryscore_{}'.format(key)] = value
@@ -174,11 +178,13 @@ class BaryScoreMetric:
         :param weights_hyps: hypothesis weights in the Wasserstein Barycenters
         :return:
         """
+        if weights_hyps is not None or weights_refs is not None:
+            assert weights_refs is not None
+            assert weights_hyps is not None
+            weights_hyps = np.array([i / sum(weights_hyps) for i in weights_hyps]).astype(np.float64)
+            weights_refs = np.array([i / sum(weights_refs) for i in weights_refs]).astype(np.float64)
 
-        weights_hyps = np.array([i / sum(weights_hyps) for i in weights_hyps]).astype(np.float64)
-        weights_refs = np.array([i / sum(weights_refs) for i in weights_refs]).astype(np.float64)
-
-        self.n_layers = measures_locations_ref[0].shape[0]
+        self.n_layers = len(measures_locations_ref)
         self.d_bert = measures_locations_ref[0].shape[1]
         ####################################
         ## Compute Wasserstein Barycenter ##
@@ -195,14 +201,17 @@ class BaryScoreMetric:
         weights_second_barycenter = np.zeros((C.shape[1])) + 1 / C.shape[1]
         wasserstein_distance = ot.emd2(weights_first_barycenter, weights_second_barycenter, C,
                                        log=True)[0]
-        wasserstein_sinkhorn = ot.bregman.sinkhorn2(weights_first_barycenter, weights_second_barycenter, C,
-                                                    reg=self.sinkhorn_ref, numItermax=10000).tolist()
-        if isinstance(wasserstein_sinkhorn, list):
-            wasserstein_sinkhorn = wasserstein_sinkhorn[0]  # for POT==0.7.0
-        return {
+        dic_results = {
             "W": wasserstein_distance,
-            "SD": wasserstein_sinkhorn
+
         }
+        for reg in [10, 1, 5, 1, 0.1, 0.5, 0.01, 0.001]:
+            wasserstein_sinkhorn = ot.bregman.sinkhorn2(weights_first_barycenter, weights_second_barycenter, C,
+                                                        reg=self.sinkhorn_ref, numItermax=10000).tolist()
+            if isinstance(wasserstein_sinkhorn, list):
+                wasserstein_sinkhorn = wasserstein_sinkhorn[0]  # for POT==0.7.0
+            dic_results['SD_{}'.format(reg)] = wasserstein_sinkhorn
+        return dic_results
 
     def w_barycenter(self, measures_locations, weights):
         """
@@ -210,13 +219,15 @@ class BaryScoreMetric:
         :param weights: weights of the input measures
         :return: barycentrique distribution
         """
-        X_init = np.zeros((self.n_layers, self.d_bert))
-        m = np.zeros((self.n_layers)) + 1 / self.n_layers
-        measures_weights = [m] * self.n_layers
+        X_init = np.zeros((measures_locations[0].shape[0], self.d_bert)).astype(np.float64)
+        if weights is None:
+            measures_weights = [np.array(
+                [1 / measures_locations[0].shape[0]] * measures_locations[0].shape[0])] * self.n_layers
+        else:
+            measures_weights = [weights / sum(weights)] * self.n_layers
+        b = np.array([1 / measures_locations[0].shape[0]] * measures_locations[0].shape[0]).astype(np.float64)
         mesure_bary = ot.lp.free_support_barycenter(measures_locations, measures_weights, X_init,
-                                                    b=m.copy(),
-                                                    weights=weights,
-                                                    numItermax=1000, verbose=False)
+                                                    b=b, numItermax=1000, verbose=False)
         return mesure_bary
 
     @property
@@ -231,7 +242,7 @@ if __name__ == '__main__':
     """
     Here you can find an example to use the BaryScore
     """
-    metric_call = BaryScoreMetric()
+    metric_call = BaryScoreMetric(use_idfs=False)
 
     ref = [
         'I like my cakes very much',
