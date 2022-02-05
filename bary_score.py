@@ -207,7 +207,7 @@ class BaryScoreMetric:
         }
         for reg in [10, 1, 5, 1, 0.1, 0.5, 0.01, 0.001]:
             wasserstein_sinkhorn = ot.bregman.sinkhorn2(weights_first_barycenter, weights_second_barycenter, C,
-                                                        reg=self.sinkhorn_ref, numItermax=10000).tolist()
+                                                        reg=reg, numItermax=10000).tolist()
             if isinstance(wasserstein_sinkhorn, list):
                 wasserstein_sinkhorn = wasserstein_sinkhorn[0]  # for POT==0.7.0
             dic_results['SD_{}'.format(reg)] = wasserstein_sinkhorn
