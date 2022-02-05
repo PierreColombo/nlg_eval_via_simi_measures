@@ -88,11 +88,11 @@ def main():
     else:
         raise NotImplementedError
     all_preds = []
-    idf_hyps, idf_ref = metric.prepare_idfs(cands, refs)
+    metric.prepare_idfs(cands, refs)
     batched_candidates = [cands[i:i + args.batch_size] for i in range(0, len(cands), args.batch_size)]
     batched_references = [refs[i:i + args.batch_size] for i in range(0, len(refs), args.batch_size)]
     for golden_batch, candidate_batch in tqdm(zip(batched_references, batched_candidates), 'Evaluation in Progress'):
-        preds = metric.evaluate_batch(candidate_batch, golden_batch, idf_hyps=idf_hyps, idf_ref=idf_ref)
+        preds = metric.evaluate_batch(candidate_batch, golden_batch)
         all_preds.append(preds)
 
     for k in preds.keys():

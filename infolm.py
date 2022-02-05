@@ -267,7 +267,7 @@ class InfoLM:
             final_distribution.append(dict_logits_distribution)
         return final_distribution, idfs
 
-    def evaluate_batch(self, batch_hyps, batch_refs):
+    def evaluate_batch(self, batch_hyps, batch_refs, idf_hyps=None, idf_ref=None):
         """
         :param batch_hyps: hypothesis list of string sentences
         :param batch_refs: reference list of string sentences
@@ -276,7 +276,8 @@ class InfoLM:
         :return: dictionary of scores
         """
         if self.use_idf_weights:
-            idf_hyps, idf_ref = self.idf_dict_hyp, self.idf_dict_ref
+            if (idf_hyps is None) and (idf_ref is None):
+                idf_hyps, idf_ref = self.idf_dict_hyp, self.idf_dict_ref
             idf_hyps[self.model.config.pad_token_id] = 0  # for padding
             idf_ref[self.model.config.pad_token_id] = 0
         with torch.no_grad():
