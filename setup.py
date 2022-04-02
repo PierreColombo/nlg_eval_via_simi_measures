@@ -1,7 +1,24 @@
+import os
 from setuptools import find_packages, setup
+from typing import List
+
+_PATH_ROOT = os.path.realpath(os.path.dirname(__file__))
 
 
-BASE_REQUIREMENTS = []
+def _load_requirements(path_dir: str, file_name: str = "requirements.txt", comment_char: str = "#") -> List[str]:
+    with open(os.path.join(path_dir, file_name)) as f:
+        lines = [line.strip() for line in f.readlines()]
+    requirements = []
+    for line in lines:
+        if comment_char in line:
+            char_idx = min(line.index(ch) for ch in comment_char)
+            line = line[:char_idx].strip()
+        if line:
+            requirements.append(line)
+    return requirements
+
+
+BASE_REQUIREMENTS = _load_requirements(_PATH_ROOT)
 
 
 setup(
@@ -20,7 +37,7 @@ setup(
         "Natural Language :: English",
         # How mature is this project? Common values are
         #   3 - Alpha, 4 - Beta, 5 - Production/Stable
-        "Development Status :: 3 - Alpha",
+        "Development Status :: 4 - Beta",
         "Intended Audience :: Researchers",
         "Topic :: Scientific/Engineering :: Artificial Intelligence",
         "Programming Language :: Python :: 3",
@@ -29,5 +46,5 @@ setup(
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
     ],
-    entry_points={"console_scripts": ["donalg-cli = donalg.cli.cli:main"]},
+    entry_points={"console_scripts": ["nlg-score-cli = nlg_eval_simi_measures.score_cli:main"]},
 )
