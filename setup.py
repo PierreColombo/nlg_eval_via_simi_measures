@@ -12,7 +12,7 @@ def _load_requirements(path_dir: str, file_name: str = "requirements.txt", comme
     requirements = []
     for line in lines:
         if comment_char in line:
-            char_idx = min(line.index(ch) for ch in comment_char)
+            char_idx = min(line.index(char) for char in comment_char)
             line = line[:char_idx].strip()
         if line:
             requirements.append(line)
@@ -33,10 +33,13 @@ setup(
     author_email="pierre.colombo@centralesupelec.fr, guillaume.staerman@telecom-paris.fr",
     short_description="Automatic evaluation NLG metrics.",
     long_description=README_FILE,
+    long_description_content_type="text/markdown",
+    include_package_data=True,
     packages=find_packages(),
     keywords=["natural language generation", "evaluation", "metrics"],
     python_requires=">=3.6",
     install_requires=BASE_REQUIREMENTS,
+    projectt_urls={},
     classifiers=[
         "Environment :: Console",
         "Natural Language :: English",
