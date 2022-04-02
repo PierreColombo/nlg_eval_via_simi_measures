@@ -46,5 +46,5 @@ setup(
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
     ],
-    entry_points={"console_scripts": ["nlg-score-cli = nlg_eval_simi_measures.score_cli:main"]},
+    entry_points={"console_scripts": ["nlg-score-cli = nlg_eval_via_simi_measures.score_cli:main"]},
 )
