@@ -3,6 +3,7 @@ from setuptools import find_packages, setup
 from typing import List
 
 _PATH_ROOT = os.path.realpath(os.path.dirname(__file__))
+_README_FILE_NAME = "readme.md"
 
 
 def _load_requirements(path_dir: str, file_name: str = "requirements.txt", comment_char: str = "#") -> List[str]:
@@ -20,6 +21,9 @@ def _load_requirements(path_dir: str, file_name: str = "requirements.txt", comme
 
 BASE_REQUIREMENTS = _load_requirements(_PATH_ROOT)
 
+with open(os.path.join(_PATH_ROOT, _README_FILE_NAME), encoding="utf-8") as f:
+    README_FILE = f.read()
+
 
 setup(
     name="nlg_eval_via_simi_measures",
@@ -27,7 +31,8 @@ setup(
     url="https://github.com/PierreColombo/nlg_eval_via_simi_measures",
     author="Pierre Colombo, Guillaume Staerman",
     author_email="pierre.colombo@centralesupelec.fr, guillaume.staerman@telecom-paris.fr",
-    short_description="Automatic evaliation NLG metrics.",
+    short_description="Automatic evaluation NLG metrics.",
+    long_description=README_FILE,
     packages=find_packages(),
     keywords=["natural language generation", "evaluation", "metrics"],
     python_requires=">=3.6",
