@@ -1,4 +1,4 @@
-name: PyPI release
+name: PyPI Release
 
 # https://help.github.com/en/actions/reference/events-that-trigger-workflows
 on:  # Trigger the workflow on push or pull request, but only for the master branch
@@ -47,3 +47,25 @@ jobs:
         with:
           files: 'dist/*'
           repo-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Delay releasing
+        if: startsWith(github.event.ref, 'refs/tags') || github.event_name == 'release'
+        uses: juliangruber/sleep-action@v1
+        with:
+          time: 5m
+
+      - name: Publish package to Test PyPI
+        if: startsWith(github.event.ref, 'refs/tags') || github.event_name == 'release'
+        uses: pypa/gh-action-pypi-publish@v1.4.1
+        with:
+          user: __token__
+          password: ${{ secrets.TEST_PYPI_API_TOKEN }}
+          repository_url: https://test.pypi.org/legacy/
+          verbose: True
+
+      - name: Publish package to PyPI
+        if: startsWith(github.event.ref, 'refs/tags') || github.event_name == 'release'
+        uses: pypa/gh-action-pypi-publish@v1.4.1
+        with:
+          user: __token__
+          password: ${{ secrets.PYPI_API_TOKEN }}
