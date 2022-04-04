@@ -1,0 +1,14 @@
+# Manifest syntax https://docs.python.org/2/distutils/sourcedist.html
+graft wheelhouse
+
+# Include the README and CHANGELOG
+include *.md
+
+# Include the Requirements
+include requirements.txt
+
+# Exclude build configs
+exclude *.yml
+
+# Exclude examples
+exclude *.sh

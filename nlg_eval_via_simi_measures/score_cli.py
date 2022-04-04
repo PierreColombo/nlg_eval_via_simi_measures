@@ -1,13 +1,15 @@
 #!/usr/bin/env python
+import logging
 import os
 import argparse
 import torch
 
-from bary_score import BaryScoreMetric
-from depth_score import DepthScoreMetric
-from infolm import InfoLM
 from tqdm import tqdm
-import logging
+
+from nlg_eval_via_simi_measures.bary_score import BaryScoreMetric
+from nlg_eval_via_simi_measures.depth_score import DepthScoreMetric
+from nlg_eval_via_simi_measures.infolm import InfoLM
+
 
 logging.basicConfig(
     format="%(asctime)s - %(levelname)s - %(name)s -   %(message)s", datefmt="%m/%d/%Y %H:%M:%S",
