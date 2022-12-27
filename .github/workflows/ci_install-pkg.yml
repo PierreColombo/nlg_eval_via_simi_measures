@@ -1,0 +1,47 @@
+name: Install Package
+
+# see: https://help.github.com/en/actions/reference/events-that-trigger-workflows
+on:  # Trigger the workflow on push or pull request, but only for the main branch
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  pkg-check:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@master
+      - uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+
+      - name: Create package
+        run: |
+          pip install --upgrade setuptools wheel
+          python setup.py sdist
+
+  pkg-install:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+
+      - name: Create package
+        run: |
+          pip install --upgrade setuptools wheel
+          python setup.py sdist bdist_wheel
+      - name: Install | Uninstall package - archive
+        working-directory: dist
+        run: |
+          pip install *.tar.gz
+          python -c "import nlg_eval_via_simi_measures"
+          pip uninstall -y nlg_eval_via_simi_measures
+      - name: Install | Uninstall package - wheel
+        working-directory: dist
+        run: |
+          pip install *.whl
+          python -c "import nlg_eval_via_simi_measures"
+          pip uninstall -y nlg_eval_via_simi_measures

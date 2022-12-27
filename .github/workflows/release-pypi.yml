@@ -1,0 +1,39 @@
+name: PyPI Release
+
+# https://help.github.com/en/actions/reference/events-that-trigger-workflows
+on:  # Trigger the workflow on push or pull request, but only for the main branch
+  push:
+    branches: [main]
+  release:
+    types: [published]
+
+# Based on https://github.com/pypa/gh-action-pypi-publish
+jobs:
+  build-package:
+    runs-on: ubuntu-20.04
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+
+      - name: Build package
+        run: |
+          pip install --upgrade setuptools wheel
+          python setup.py sdist bdist_wheel
+          ls -lh dist/
+
+      - name: Upload package to release
+        if: startsWith(github.event.ref, 'refs/tags') || github.event_name == 'release'
+        uses: AButler/upload-release-assets@v2.0
+        with:
+          files: 'dist/*'
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Publish package to PyPI
+        if: startsWith(github.event.ref, 'refs/tags') || github.event_name == 'release'
+        uses: pypa/gh-action-pypi-publish@v1.4.1
+        with:
+          user: __token__
+          password: ${{ secrets.PYPI_API_TOKEN }}
